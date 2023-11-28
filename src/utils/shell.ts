@@ -1,6 +1,10 @@
 import { Log } from "@/context/History";
 import * as bin from "./bin";
 
+interface BinCommands {
+  [key: string]: () => string;
+}
+
 export function shell(
   command: string,
   addToHistory: (log: Log) => void,
@@ -19,7 +23,7 @@ export function shell(
       output: `zsh: command not found: ${command}. Type 'help' for available commands`,
     });
   } else {
-    const output = (bin as any)[command]();
+    const output = (bin as BinCommands)[command]();
 
     addToHistory({ command, output });
   }

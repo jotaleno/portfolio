@@ -7,3 +7,7 @@ Press 'help' to list all the available commands to navigate through this Shell.`
 export function clear(): string {
   return "";
 }
+
+export function ls(): string {
+  return "about cv company";
+}
