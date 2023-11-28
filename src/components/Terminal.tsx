@@ -1,8 +1,8 @@
 "use client";
 
 import { Input } from "./Input";
-import { useHistoryContext } from "@/hooks/HistoryContext";
-import { Log } from "./Log";
+import { History } from "./History";
+import { useRef } from "react";
 
 interface TerminalProps {
   username: string;
@@ -10,22 +10,23 @@ interface TerminalProps {
 }
 
 export function Terminal(props: TerminalProps) {
-  const { logs } = useHistoryContext();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const onClick = () => {
+    inputRef.current?.focus();
+  };
 
   return (
-    <div className="p-6 bg-slate-800 h-full border-2 rounded overflow-y-scroll">
-      {logs.map((log, index) => {
-        return (
-          <Log
-            key={index}
-            username={props.username}
-            hostname={props.hostname}
-            command={log.command}
-            output={log.output}
-          />
-        );
-      })}
-      <Input username={props.username} hostname={props.hostname} />
+    <div
+      className="p-6 bg-slate-800 h-full border-2 rounded overflow-y-scroll"
+      onClick={onClick}
+    >
+      <History username={props.username} hostname={props.hostname} />
+      <Input
+        username={props.username}
+        hostname={props.hostname}
+        inputRef={inputRef}
+      />
     </div>
   );
 }

@@ -5,13 +5,11 @@ interface PromptProps {
 
 export function Prompt(props: PromptProps) {
   return (
-    <div>
-      <label>
-        <span className="text-blue-300">{props.username}</span>
-        <span className="text-white">@</span>
-        <span className="text-teal-300">{props.hostname}</span>
-        <span className="text-white whitespace-pre">:$ ~ </span>
-      </label>
-    </div>
+    <label>
+      <span className="text-blue-300">{props.username}</span>
+      <span className="text-white">@</span>
+      <span className="text-teal-300">{props.hostname}</span>
+      <span className="text-white whitespace-pre">:$ ~ </span>
+    </label>
   );
 }
