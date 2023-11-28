@@ -1,6 +1,6 @@
 "use client";
 
-import { welcome } from "@/data/commands";
+import { executeCommand } from "@/data/commands";
 import {
   Dispatch,
   PropsWithChildren,
@@ -25,7 +25,7 @@ export const HistoryContext = createContext<History | null>(null);
 
 export function HistoryProvider(props: HistoryProviderProps) {
   const [logs, setLogs] = useState<Log[]>([
-    { output: welcome.output, command: welcome.command },
+    { command: "about", output: executeCommand("about") },
   ] as Log[]);
 
   return (

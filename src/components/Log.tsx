@@ -12,10 +12,10 @@ export function Log(props: LogProps) {
     <div>
       <div className="flex">
         <Prompt username={props.username} hostname={props.hostname} />
-        <span className="w-full text-zinc-300 ">{props.command}</span>
+        <span className="w-full text-white ">{props.command}</span>
       </div>
 
-      <span className="text-zinc-300 whitespace-pre-wrap">{props.output}</span>
+      <span className="text-white whitespace-pre-wrap">{props.output}</span>
     </div>
   );
 }
