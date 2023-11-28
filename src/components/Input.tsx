@@ -1,6 +1,12 @@
 "use client";
 
-import { ChangeEvent, KeyboardEvent, LegacyRef, useState } from "react";
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  RefObject,
+  useEffect,
+  useState,
+} from "react";
 import { Prompt } from "./Prompt";
 import { useHistoryContext } from "@/hooks/HistoryContext";
 import { shell, hasCommand } from "@/utils/shell";
@@ -8,18 +14,24 @@ import { shell, hasCommand } from "@/utils/shell";
 interface InputProps {
   username: string;
   hostname: string;
-  inputRef: LegacyRef<HTMLInputElement>;
+  inputRef: RefObject<HTMLInputElement>;
 }
 
 export function Input(props: InputProps) {
-  const { addToHistory, clearHistory } = useHistoryContext();
+  const { history, addToHistory, clearHistory } = useHistoryContext();
   const [command, setCommand] = useState<string>("");
 
-  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    if (props.inputRef.current) {
+      props.inputRef.current.scrollIntoView();
+    }
+  }, [history, props.inputRef]);
+
+  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCommand(event.target.value);
   };
 
-  const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+  const handleOnKeyDownCapture = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
 
@@ -29,6 +41,7 @@ export function Input(props: InputProps) {
     }
 
     if (event.ctrlKey && event.key === "l") {
+      event.preventDefault();
       shell("clear", addToHistory, clearHistory);
     }
   };
@@ -38,15 +51,15 @@ export function Input(props: InputProps) {
       <Prompt username={props.username} hostname={props.hostname} />
       <input
         className={`w-full bg-transparent focus:outline-none caret-white ${
-          hasCommand(command) ? "text-teal-300" : "text-white"
+          hasCommand(command) ? "text-teal-300" : "text-red-300"
         }`}
         autoFocus={true}
         type="text"
         autoComplete="off"
         spellCheck="false"
         value={command}
-        onChange={(event) => onChangeHandler(event)}
-        onKeyDownCapture={(event) => onKeyDownHandler(event)}
+        onChange={(event) => handleOnChange(event)}
+        onKeyDownCapture={(event) => handleOnKeyDownCapture(event)}
         ref={props.inputRef}
       />
     </div>
